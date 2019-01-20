@@ -1,0 +1,56 @@
+(*
+	Keep File Syntax for jebnf
+*)
+
+(* Basic definitions for ebnf meta identifiers *)
+
+letter				= ´a´  | ´b´ | ´c´ | ´d´ | ´e´ | ´f´ | ´g´ |
+				  ´h´ | ´i´ | ´j´ | ´k´ | ´l´ | ´m´ | ´n´ |
+				  ´o´ | ´p´ | ´q´ | ´r´ | ´s´ | ´t´ | ´u´ |
+				  ´v´ | ´w´ | ´x´ | ´y´ | ´z´ |
+				  ´A´ | ´B´ | ´C´ | ´D´ | ´E´ | ´F´ | ´G´ |
+				  ´H´ | ´I´ | ´J´ | ´K´ | ´L´ | ´M´ | ´N´ |
+				  ´O´ | ´P´ | ´Q´ | ´R´ | ´S´ | ´T´ | ´U´ |
+				  ´V´ | ´W´ | ´X´ | ´Y´ | ´Z´;
+decimal digit			= "0" | "1" | "2" | "3" | "4" | "5" | "6" |
+				  "7" | "8" | "9";
+meta identifier character	= letter | decimal digit;
+meta identifier			= letter, { meta identifier character };
+
+(*
+	The following options can be supplied for each production:
+
+	Keep:		The production rule is never reduced
+			during optimizations
+	Starter:	The production rule is an allowed starter
+			production
+
+	Whitespace mode. This is always prefixed by the string "whitespace"
+	followed by one of the whitespace modes for the given production:
+
+		ignore		Accept whitespace (for example into quoted strings)
+		strip		Removes all whitespace
+		reduce		Reduces whitespace to one whitespace symbol per
+					whitespace sequence
+*)
+
+keep 						= "keep";
+starter 					= "starter";
+
+whitespace mode				= "whitespace", whitespace mode identifier;
+
+whitespace mode identifier	= whitespace mode reduce | whitespace mode strip | whitespace mode ignore;
+
+whitespace mode ignore 		= "ignore";
+whitespace mode strip 		= "strip";
+whitespace mode reduce 		= "reduce";
+
+prod option			= starter | keep | whitespace mode;
+
+(*
+	A single production property is always a meta identifier followed by
+	a list of potential options that affect code generation
+*)
+
+production property		= meta identifier, { ´,´, prod option }, ´;´;
+keep file syntax		= production property, { production property };

@@ -1,0 +1,73 @@
+lc letter = ´a´ | ´b´ | ´c´ | ´d´ | ´e´ | ´f´ | ´g´ | ´h´ | ´i´ | ´j´ | ´k´ | ´l´ | ´m´ | ´n´ | ´o´ | ´p´ | ´q´ | ´r´ | ´s´ | ´t´ | ´u´ | ´v´ | ´w´ | ´x´ | ´y´ | ´z´;
+uc letter = ´A´ | ´B´ | ´C´ | ´D´ | ´E´ | ´F´ | ´G´ | ´H´ | ´I´ | ´J´ | ´K´ | ´L´ | ´M´ | ´N´ | ´O´ | ´P´ | ´Q´ | ´R´ | ´S´ | ´T´ | ´U´ | ´V´ | ´W´ | ´X´ | ´Y´ | ´Z´;
+digit = ´0´ | ´1´ | ´2´ | ´3´ | ´4´ | ´5´ | ´6´ | ´7´ | ´8´ | ´9´;
+hex digit = digit | ´a´ | ´b´ | ´c´ | ´d´ | ´e´ | ´f´;
+underscore = ´_´;
+letter = lc letter | uc letter;
+ident char = letter | digit | underscore;
+lc ident = lc letter, { ident char };
+uc ident = uc letter, { ident char };
+namespace ident = lc ident;
+lc ident ns = [ namespace ident, ´.´ ], lc ident;
+uc ident ns = [ namespace ident, ´.´ ], uc ident;
+lc ident full = lc ident ns, [ ´#´, 8 * hex digit ];
+underscore = ´_´;
+colon = ´:´;
+semicolon = ´;´;
+open par = ´(´;
+close par = ´)´;
+open bracket = ´[´;
+close bracket = ´]´;
+open brace = ´{´;
+close brace = ´}´;
+triple minus = "---";
+nat const = digit, { digit };
+lc ident full
+lc ident
+uc ident ns
+equals = ´=´;
+hash = ´#´;
+question mark = ´?´;
+percent = ´%´;
+plus = ´+´;
+langle = ´<´;
+rangle = ´>´;
+comma = ´,´;
+dot = ´.´;
+asterisk = ´*´;
+excl mark = ´!´;
+Final kw = "Final";
+New kw = "New";
+Empty kw = "Empty";
+TL program = constr declarations, { "---", "functions", "---", fun declarations | "---", "types", "---", constr declarations };
+constr declarations = { declaration };
+fun declarations = { declaration };
+declaration = combinator decl | partial app decl | final decl;
+type expr = expr;
+nat expr = expr;
+expr = { subexpr };
+subexpr = term | nat const, ´+´, subexpr | subexpr, ´+´, nat const;
+term = ´(´, expr, ´)´ | type ident | var ident | nat const | ´%´, term | type ident, ´<´, expr, { ´,´, expr }, ´>´;
+type ident = boxed type ident | lc ident ns | ´#´;
+boxed type ident = uc ident ns;
+var ident = lc ident | uc ident;
+type term = term;
+nat term = term;
+combinator decl = full combinator id, { opt args }, { args }, ´=´, result type, ´;´;
+full combinator id = lc ident full | ´_´;
+combinator id = lc ident ns | ´_´;
+opt args = { var ident, { var ident }, ´:´, [ excl mark ], type expr };
+args = var ident opt, ´:´, [ conditional def ], [ ´!´ ], type term |
+	[ var ident opt, ´:´ ], [ multiplicity, ´*´], { args } |
+	´(´, var ident opt, { var ident opt }, ´:´, [ ´!´ ], type term, ´)´ |
+	[ ´!´ ], type term;
+multiplicity = nat term;
+var ident opt = var ident | ´_´;
+conditional def = var ident, [ ´.´, nat const ], ´?´;
+result type = boxed type ident, { subexpr } |
+	boxed type ident, ´<´, subexpr, { ´,´, subexpr }, ´>´;
+builtin combinator decl = full combinator id, ´?´, ´=´, boxed type ident, ´;´;
+partial app decl = partial type app decl | partial comb app decl;
+partial type app decl = boxed type ident, subexpr, { subexpr }, ´;´ | boxed type ident, ´<´, expr, { ´,´, expr }, ´>´, ´;´;
+partial comb app decl = combinator id, subexpr, { subexpr }, ´;´;
+final decl = ´New´, boxed type ident, ´;´ | ´Final´, boxed type ident, ´;´ | ´Empty´, boxed type ident, ´;´;

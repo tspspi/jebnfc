@@ -1,0 +1,20 @@
+JAVAC = javac
+
+JCFLAGS = 
+
+CLASSPOSTFIX = .class
+JARPOSTFIX = .jar
+
+RMFILECOMMAND = rm
+COPYFILECOMMAND = cp
+SLIBARCOMMAND = ar rcs
+
+SILENT = >/dev/null
+PATHSEPCHAR = /
+JCLASSPATHSEPCHAR = :
+
+osspeccleanwork:
+
+osspecclean:
+
+	find ./ -name "*.class" -exec rm {} \;

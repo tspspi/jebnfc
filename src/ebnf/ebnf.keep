@@ -1,0 +1,42 @@
+(*
+	We only have one starter production. This is the syntax element
+*)
+syntax, starter;
+
+(*
+	Our primary information element is the syntax rule, so we have to keep it
+*)
+syntax rule, keep;
+
+(*
+	We require meta identifiers as separate objects to process our
+	parsed EBNF. Keep them.
+*)
+meta identifier, keep;
+
+(*
+	Choice and sequence
+*)
+definitions list, keep;
+single definition, keep;
+syntactic term, keep;
+
+syntactic factor, keep;
+integer, keep;
+optional sequence, keep;
+repeated sequence, keep;
+grouped sequence, keep;
+syntactic factor repeatedfactor, keep;
+empty sequence, keep;
+
+syntactic exception, keep;
+special sequence value, keep;
+
+(*
+	Inside our terminal strings we do not strip whitespace.
+*)
+terminal string, keep, whitespace ignore;
+terminal string second, whitespace ignore;
+terminal string first, whitespace ignore;
+first quote symbol, whitespace ignore;
+second quote symbol, whitespace ignore;

@@ -1,0 +1,9 @@
+keep file syntax, starter, keep;
+meta identifier, keep;
+prod option, keep;
+keep, keep;
+starter, keep;
+whitespace mode, keep;
+whitespace mode ignore, keep;
+whitespace mode strip, keep;
+whitespace mode reduce, keep;

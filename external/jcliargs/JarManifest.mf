@@ -1,0 +1,5 @@
+Name: attspi/jcliargs
+Sealed: true
+Implementation-Title: at.tspi.jcliargs
+Implementation-Version: v1
+Implementation-Vendor: tspi.at
